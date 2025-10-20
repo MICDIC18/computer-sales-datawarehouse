@@ -1,0 +1,82 @@
+--SELECT TOP 5 CPU_BRAND BY MONTH, REGION, WHERE CONTINENT="EUROPE" WITH AVERAGE_CPU_MONTHLY_SALES
+WITH 
+  MEMBER [Measures].[AvgMonthlyCPUSales] AS  
+    Avg(  
+      Descendants( 
+         [TIME].[Gerarchia].CurrentMember,   
+         [TIME].[Gerarchia].[Month Str]    
+      ),   
+       [Measures].[Cpu Sales Usd] 
+   )  
+SELECT 
+   [Measures].[AvgMonthlyCPUSales] ON COLUMNS,
+   NONEMPTY(
+      GENERATE(
+         ([TIME].[Month Str].[Month Str], [GEOGRAPHY].[Region].[Region]),
+         TOPCOUNT(
+            ([TIME].[Month Str].CURRENTMEMBER,
+			[GEOGRAPHY].[Region].CURRENTMEMBER,
+			[CPU].[Cpu Brand].[Cpu Brand]),
+            5,
+            [Measures].[AvgMonthlyCPUSales]
+         )
+      )
+   )ON ROWS
+FROM [Group ID 778 DB]
+WHERE [GEOGRAPHY].[Gerarchia].[Continent].&[Europe]
+
+
+--SELECT TOP 5 CPU_BRAND BY MONTH, REGION, WHERE CONTINENT="EUROPE" WITH AVERAGE_GPU_MONTHLY_SALES
+WITH 
+  MEMBER [Measures].[AvgMonthlyGPUSales] AS  
+    Avg(  
+      Descendants( 
+         [TIME].[Gerarchia].CurrentMember,   
+         [TIME].[Gerarchia].[Month Str]    
+      ),   
+       [Measures].[Gpu Sales Usd] 
+   )  
+SELECT 
+   [Measures].[AvgMonthlyGPUSales] ON COLUMNS,
+   NONEMPTY(
+      GENERATE(
+         ([TIME].[Month Str].[Month Str], [GEOGRAPHY].[Region].[Region]),
+         TOPCOUNT(
+            ([TIME].[Month Str].CURRENTMEMBER,
+			[GEOGRAPHY].[Region].CURRENTMEMBER,
+			[GPU].[Gpu Brand].[Gpu Brand]),
+            5,
+            [Measures].[AvgMonthlyGPUSales]
+         )
+      )
+   )ON ROWS
+FROM [Group ID 778 DB]
+WHERE [GEOGRAPHY].[Gerarchia].[Continent].&[Europe]
+
+
+--SELECT TOP 5 CPU_BRAND BY MONTH, REGION, WHERE CONTINENT="EUROPE" WITH AVERAGE_RAM_MONTHLY_SALES
+WITH 
+  MEMBER [Measures].[AvgMonthlyRAMSales] AS  
+    Avg(  
+      Descendants( 
+         [TIME].[Gerarchia].CurrentMember,   
+         [TIME].[Gerarchia].[Month Str]    
+      ),   
+       [Measures].[Ram Sales Usd] 
+   )  
+SELECT 
+   [Measures].[AvgMonthlyRAMSales] ON COLUMNS,
+   NONEMPTY(
+      GENERATE(
+         ([TIME].[Month Str].[Month Str], [GEOGRAPHY].[Region].[Region]),
+         TOPCOUNT(
+            ([TIME].[Month Str].CURRENTMEMBER,
+			[GEOGRAPHY].[Region].CURRENTMEMBER,
+			[RAM].[Ram Brand].[Ram Brand]),
+            5,
+            [Measures].[AvgMonthlyRAMSales]
+         )
+      )
+   )ON ROWS
+FROM [Group ID 778 DB]
+WHERE [GEOGRAPHY].[Gerarchia].[Continent].&[Europe]
